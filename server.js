@@ -4,11 +4,14 @@ const redis = require('redis');
 
 const app = express();
 const PORT = 3000;
-const REDIS_PORT = 6379;
+const REDIS_URL = process.env.REDIS_URL || 'redis://red-cqjgsk6ehbks73cb6870:6379';
 const PAGE_SIZE = 10; // Number of items per page
 
 // Create Redis client
-const client = redis.createClient(REDIS_PORT);
+// Create Redis client
+const client = redis.createClient({
+  url: REDIS_URL
+});
 
 client.on('error', (err) => {
   console.error('Redis error:', err);
