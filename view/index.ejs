@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GosReestr Objects</title>
+    <link rel="stylesheet" href="/style.css">
+    <script>
+        function searchAllFields() {
+            const searchQuery = document.getElementById('search-query').value.toLowerCase();
+            window.location.href = `/?search=${searchQuery}`;
+        }
+    </script>
+</head>
+<body>
+    <h1>GosReestr Objects</h1>
+    <div class="search-container">
+        <div class="search-box">
+            <input type="text" id="search-query" class="search-input" value="<%= searchQuery %>" placeholder="Search across all fields">
+            <button class="search-button" onclick="searchAllFields()">Search</button>
+        </div>
+    </div>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Location</th>
+                <th>Oked</th>
+                <th>State Involvement</th>
+                <th>Status</th>
+                <th>KFS L1</th>
+                <th>KFS L2</th>
+                <th>Owner BIN</th>
+                <th>OGU BIN</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% organizations.forEach(object => { %>
+                <tr>
+                    <td><%= object.flBin %></td>
+                    <td>
+                        <% object.flNameParts.forEach((part, index) => { %>
+                            <div style="margin-left: <%= index * 20 %>px;"><%= part %></div>
+                        <% }) %>
+                    </td>
+                    <td><%= object.flOpf %></td>
+                    <td><%= object.flKfsL0 %></td>
+                    <td><%= object.flOkedL0 %></td>
+                    <td><%= object.flStateInvolvement %></td>
+                    <td><%= object.flStatus %></td>
+                    <td><%= object.flKfsL1 %></td>
+                    <td><%= object.flKfsL2 %></td>
+                    <td><%= object.flOwnerBin %></td>
+                    <td><%= object.flOguBin %></td>
+                </tr>
+            <% }) %>
+        </tbody>
+    </table>
+    <div class="pagination">
+        <% if (totalPages > 1) { %>
+            <% if (currentPage > 1) { %>
+                <a href="/?page=1&search=<%= searchQuery %>">First</a>
+                <a href="/?page=<%= currentPage - 1 %>&search=<%= searchQuery %>">Previous</a>
+            <% } %>
+            <% for (let i = 1; i <= totalPages; i++) { %>
+                <% if (i === currentPage) { %>
+                    <a href="/?page=<%= i %>&search=<%= searchQuery %>" class="active"><%= i %></a>
+                <% } else if (i === 1 || i === totalPages || (i >= currentPage - 2 && i <= currentPage + 2)) { %>
+                    <a href="/?page=<%= i %>&search=<%= searchQuery %>"><%= i %></a>
+                <% } else if (i === currentPage - 3 || i === currentPage + 3) { %>
+                    <span>...</span>
+                <% } %>
+            <% } %>
+            <% if (currentPage < totalPages) { %>
+                <a href="/?page=<%= currentPage + 1 %>&search=<%= searchQuery %>">Next</a>
+                <a href="/?page=<%= totalPages %>&search=<%= searchQuery %>">Last</a>
+            <% } %>
+        <% } %>
+    </div>
+</body>
+</html>
